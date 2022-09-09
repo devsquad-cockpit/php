@@ -20,7 +20,7 @@ jobs:
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: PHP Mess Detector
-        run: ./vendor/bin/phpmd app text ./phpmd.xml
+        run: ./vendor/bin/phpmd src text ./phpmd.xml
 
       - name: PHP Code Sniffer
         run: ./vendor/bin/phpcs --standard=phpcs.xml
@@ -29,4 +29,4 @@ jobs:
         run: ./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --stop-on-violation
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
-        run: php artisan test --parallel --configuration phpunit-ci.xml
+        run: ./vendor/bin/pest --configuration phpunit-ci.xml
