@@ -27,3 +27,6 @@ jobs:
 
       - name: PHP CS Fixer
         run: ./vendor/bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --stop-on-violation
+
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: ./vendor/bin/phpunit --configuration phpunit-ci.xml
