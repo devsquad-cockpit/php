@@ -1,5 +1,9 @@
 <?php
 
+use Cockpit\Php\Cockpit;
+use Cockpit\Php\Tests\Fixtures\Services\MyService;
+use Monolog\Logger;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -47,5 +51,18 @@ function something()
 
 function dispatchError(): void
 {
-    // ..
+    try {
+        (new MyService())->handle();
+    } catch (Throwable $e) {
+    }
+
+    $record = [
+        'level'   => Logger::ERROR,
+        'context' => [
+            'exception' => $e,
+        ],
+    ];
+
+    $errorHandler = new Cockpit;
+    $errorHandler->write($record);
 }
