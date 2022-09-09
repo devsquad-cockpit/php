@@ -32,7 +32,11 @@
   "autoload": {
     "psr-4": {
       "Cockpit\\Php\\": "src/"
-    }
+    },
+    "files": [
+      "src/helpers.php",
+      "src/handler.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
