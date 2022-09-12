@@ -48,7 +48,8 @@
     "spatie/backtrace": "^1.2",
     "illuminate/support": "^6.9|^7.0|^8.0|^9.0",
     "illuminate/http": "^8.8|^9.28",
-    "illuminate/container": "^9.28"
+    "illuminate/container": "^9.28",
+    "guzzlehttp/guzzle": "^7.5"
   },
   "require-dev": {
     "orchestra/testbench": "^7.5",

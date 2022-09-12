@@ -4,6 +4,7 @@ namespace Cockpit\Php\Exceptions;
 
 use Cockpit\Php\Context\StackTraceContext;
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -72,14 +73,10 @@ class CockpitErrorHandler
     protected static function send($data)
     {
         try {
-            $curl = curl_init(getenv('COCKPIT_URL'));
-
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-            curl_exec($curl);
-            curl_close($curl);
+            $client = new Client();
+            $client->post(getenv('COCKPIT_URL'), [
+                'body' => $data
+            ]);
         } catch (Exception $e) {
         }
     }
