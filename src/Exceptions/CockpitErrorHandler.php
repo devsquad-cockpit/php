@@ -75,7 +75,7 @@ class CockpitErrorHandler
         try {
             $client = new Client();
             $client->post(getenv('COCKPIT_URL'), [
-                'body' => $data
+                'json' => $data
             ]);
         } catch (Exception $e) {
         }
