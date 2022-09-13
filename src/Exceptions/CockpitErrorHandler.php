@@ -2,6 +2,7 @@
 
 namespace Cockpit\Php\Exceptions;
 
+use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Context\StackTraceContext;
 use Exception;
 use GuzzleHttp\Client;
@@ -12,7 +13,8 @@ class CockpitErrorHandler
 {
     public static function log(Throwable $throwable)
     {
-        $traceContext = new StackTraceContext($throwable);
+        $traceContext       = new StackTraceContext($throwable);
+        $environmentContext = new EnvironmentContext;
 
         $data = [
             'throwable' => [
@@ -22,7 +24,8 @@ class CockpitErrorHandler
                 'code'        => $throwable->getCode(),
                 'resolved_at' => null,
             ],
-            'traceContext' => $traceContext->getContext(),
+            'traceContext'       => $traceContext->getContext(),
+            'environmentContext' => $environmentContext->getContext()
         ];
 
         self::send($data);
