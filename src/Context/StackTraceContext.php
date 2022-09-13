@@ -10,7 +10,7 @@ use Throwable;
 
 class StackTraceContext implements ContextInterface
 {
-    protected Throwable $throwable;
+    protected $throwable;
 
     public function __construct(Throwable $throwable)
     {
