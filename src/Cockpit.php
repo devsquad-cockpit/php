@@ -6,7 +6,7 @@ class Cockpit
     protected static $customEnvs = [];
     public static $frameworkVersion;
 
-    public static function addEnvs($callback)
+    public static function addCustomEnvs($callback)
     {
         if (is_callable($callback)) {
             self::$customEnvs[] = $callback;
@@ -19,7 +19,7 @@ class Cockpit
         }
     }
 
-    public static function getEnvs()
+    public static function getCustomEnvs()
     {
         $envs = [];
 

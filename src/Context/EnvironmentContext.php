@@ -32,7 +32,7 @@ class EnvironmentContext implements ContextInterface
             'browser_version'       => $this->request->headers->get('User-Agent'),
             'node_version'          => $this->runExec('node -v'),
             'npm_version'           => $this->runExec('npm -v'),
-        ], Cockpit::getEnvs());
+        ], Cockpit::getCustomEnvs());
     }
 
     private function getDatabaseVersion()
