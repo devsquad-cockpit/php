@@ -3,17 +3,17 @@ namespace Cockpit\Php;
 
 class Cockpit
 {
-    protected static $addEnvCallbacks = [];
+    protected static $customEnvs = [];
     public static $frameworkVersion;
 
     public static function addEnvs($callback)
     {
         if (is_callable($callback)) {
-            self::$addEnvCallbacks[] = $callback;
+            self::$customEnvs[] = $callback;
         }
 
         if (is_array($callback)) {
-            self::$addEnvCallbacks[] = function () use ($callback) {
+            self::$customEnvs[] = function () use ($callback) {
                 return $callback;
             };
         }
@@ -23,7 +23,7 @@ class Cockpit
     {
         $envs = [];
 
-        foreach (self::$addEnvCallbacks as $func) {
+        foreach (self::$customEnvs as $func) {
             $envs = array_merge($envs, ($func)());
         }
 
