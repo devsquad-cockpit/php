@@ -4,7 +4,7 @@ namespace Cockpit\Php\Interfaces;
 
 interface RecorderInterface
 {
-    public function start();
+    public static function start();
 
-    public function reset();
+    public static function reset();
 }
