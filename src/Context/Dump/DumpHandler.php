@@ -10,7 +10,7 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
  */
 class DumpHandler
 {
-    protected DumpContext $dump;
+    protected $dump;
 
     public function __construct(DumpContext $dump)
     {

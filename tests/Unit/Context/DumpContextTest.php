@@ -3,6 +3,7 @@
 namespace Cockpit\Php\Tests\Unit\Context;
 
 use Cockpit\Php\Context\DumpContext;
+use Mockery;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 beforeEach(function () {
@@ -86,7 +87,7 @@ function getHtmlString():string
 
 function getMockDumpContext(?array $data = null)
 {
-    return mock(DumpContext::class)
+    return Mockery::mock(DumpContext::class)
         ->makePartial()
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('findSourceFrame')
