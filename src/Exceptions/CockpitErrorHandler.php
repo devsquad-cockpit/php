@@ -27,7 +27,7 @@ class CockpitErrorHandler
             'type'        => self::getExceptionType(),
             'url'         => self::resolveUrl(),
             'trace'       => $traceContext->getContext(),
-            'dumpContext' => $dumpContext->getContext()
+            'dump'        => $dumpContext->getContext()
         ];
 
         self::send($data);
