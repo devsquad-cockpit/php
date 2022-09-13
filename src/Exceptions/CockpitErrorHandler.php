@@ -39,7 +39,7 @@ class CockpitErrorHandler
 
     protected static function getExceptionType(): string
     {
-        if (!php_sapi_name() == "cli") {
+        if (!runningInConsole()) {
             return OccurrenceType::WEB;
         }
 
