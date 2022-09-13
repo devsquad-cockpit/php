@@ -33,10 +33,14 @@ class DumpContext implements ContextInterface, RecorderInterface
 
             self::ensureOriginalHandlerExists();
 
-            $originalHandler = VarDumper::setHandler(fn ($dumpedVariable) => $multiDumpHandler->dump($dumpedVariable));
+            $originalHandler = VarDumper::setHandler(function ($dumpedVariable) use ($multiDumpHandler) {
+                $multiDumpHandler->dump($dumpedVariable);
+            });
 
             $multiDumpHandler->addHandler($originalHandler);
-            $multiDumpHandler->addHandler(fn ($var) => (new DumpHandler($dumpContext))->dump($var));
+            $multiDumpHandler->addHandler(function ($var) use ($dumpContext) {
+                (new DumpHandler($dumpContext))->dump($var);
+            });
         }
 
         return $dumpContext;

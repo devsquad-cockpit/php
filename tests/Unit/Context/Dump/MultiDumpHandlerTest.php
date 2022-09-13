@@ -6,8 +6,13 @@ use Cockpit\Php\Context\Dump\MultiDumpHandler;
 
 it('should be add multiple callable function at multidump handler and execute all functions', function () {
     $multiDumpHandler = new MultiDumpHandler;
-    $multiDumpHandler->addHandler(fn ($var) => var_dump('call one ' . $var));
-    $multiDumpHandler->addHandler(fn ($var) => var_dump('call two ' . $var));
+    $multiDumpHandler->addHandler(function ($var) {
+        var_dump('call one ' . $var);
+    });
+    
+    $multiDumpHandler->addHandler(function ($var) {
+        var_dump('call two ' . $var);
+    });
 
     expect($multiDumpHandler->getHandlers())
     ->toBeArray()
