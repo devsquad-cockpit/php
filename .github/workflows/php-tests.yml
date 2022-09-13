@@ -39,4 +39,4 @@ jobs:
         if: "matrix.php >= 8"
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: composer test
