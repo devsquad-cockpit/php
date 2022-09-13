@@ -12,12 +12,3 @@ it('should add the custom environments', function () {
         ->toHaveKeys(['new-env'])
         ->and($payload['new-env'])->toBe('custom-env');
 });
-
-function runExec($command)
-{
-    if (($value = @exec($command)) !== '') {
-        return $value;
-    }
-
-    return 'Not Captured';
-}
