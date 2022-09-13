@@ -19,9 +19,9 @@ use Symfony\Component\VarDumper\VarDumper;
  */
 class DumpContext implements ContextInterface, RecorderInterface
 {
-    protected static array $dumps = [];
+    protected static $dumps = [];
 
-    protected static bool $registeredHandler = false;
+    protected static $registeredHandler = false;
 
     public static function start(): DumpContext
     {

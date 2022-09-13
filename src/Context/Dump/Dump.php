@@ -9,11 +9,11 @@ class Dump
 {
     protected string $htmlDump;
 
-    protected ?string $file;
+    protected string $file;
 
-    protected ?int $lineNumber;
+    protected $lineNumber;
 
-    protected float $microtime;
+    protected $microtime;
 
     public function __construct(string $htmlDump, ?string $file, ?int $lineNumber, ?float $microtime = null)
     {
