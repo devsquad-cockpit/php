@@ -7,9 +7,9 @@ namespace Cockpit\Php\Context\Dump;
  */
 class Dump
 {
-    protected string $htmlDump;
+    protected $htmlDump;
 
-    protected string $file;
+    protected $file;
 
     protected $lineNumber;
 
