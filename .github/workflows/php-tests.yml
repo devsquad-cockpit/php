@@ -1,4 +1,4 @@
-name: PHP tests
+name: Run tests
 
 on:
   pull_request:
@@ -16,7 +16,7 @@ jobs:
           - prefer-stable
         os: [ubuntu-latest]
 
-    name: P${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout code
