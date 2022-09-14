@@ -4,7 +4,6 @@ namespace Cockpit\Php\Exceptions;
 
 use Cockpit\Php\Common\OccurrenceType;
 use Cockpit\Php\Context\StackTraceContext;
-use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -53,7 +52,7 @@ class CockpitErrorHandler
             $client->post(getenv('COCKPIT_URL'), [
                 'json' => $data
             ]);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
         }
     }
 }
