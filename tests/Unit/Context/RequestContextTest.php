@@ -2,7 +2,7 @@
 
 namespace Cockpit\Php\Tests\Unit\Context;
 
-use Cockpit\Php\Context\RequestContext;
+use Cockpit\Php\Tests\Fixtures\Context\RequestContextMock;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -11,22 +11,6 @@ use Mockery\MockInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mime\Exception\InvalidArgumentException;
-
-class RequestContextMock extends RequestContext
-{
-    public function __construct(
-        $request,
-        array $hideFromRequest = [],
-        array $hideFromHeaders = [],
-        array $hideFromCookies = []
-    ) {
-        $this->request = $request;
-
-        $this->hideFromRequest = $hideFromRequest;
-        $this->hideFromHeaders = $hideFromHeaders;
-        $this->hideFromCookies = $hideFromCookies;
-    }
-}
 
 it('should retrieve basic request data', function () {
     $appSession = 'eyJpdiI6IkRIQU1CUHhLS3loNlU5VzNsUHZRcnc9PSIsInZhbHVlIjoiRW5zbnI5N0F0eGQ1dGxmV2h6OU9Ddz09IiwibWFjIjoiZWFmMGZiODUwMWQxY2IzNjI5OGUyYTU1NjUwNDUyZDNiZDk4NjY5YTk5OTk5MTUyZjNmNzI3NmE3NWRhNjcxNCIsInRhZyI6IiJ9';
