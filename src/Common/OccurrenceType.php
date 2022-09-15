@@ -1,4 +1,5 @@
 <?php
+
 namespace Cockpit\Php\Common;
 
 abstract class OccurrenceType
