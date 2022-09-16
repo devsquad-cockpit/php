@@ -4,6 +4,7 @@ namespace Cockpit\Php\Exceptions;
 
 use Cockpit\Php\Common\OccurrenceType;
 use Cockpit\Php\Context\StackTraceContext;
+use Cockpit\Php\Context\UserContext;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,6 +15,7 @@ class CockpitErrorHandler
     public function log(Throwable $throwable): void
     {
         $traceContext = new StackTraceContext($throwable);
+        $userContext  = new UserContext();
 
         $data = [
             'exception'   => Str::replace('Symfony\\Component\\ErrorHandler\\', '', get_class($throwable)),
@@ -24,6 +26,7 @@ class CockpitErrorHandler
             'type'        => $this->getExceptionType(),
             'url'         => $this->resolveUrl(),
             'trace'       => $traceContext->getContext(),
+            'user'        => $userContext->getContext(),
         ];
 
         $this->send($data);
