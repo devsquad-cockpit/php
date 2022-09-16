@@ -16,22 +16,9 @@ class RequestContext implements ContextInterface
 {
     protected $request;
 
-    protected $hideFromRequest;
-
-    protected $hideFromHeaders;
-
-    protected $hideFromCookies;
-
-    public function __construct(
-        array $hideFromRequest = [],
-        array $hideFromHeaders = [],
-        array $hideFromCookies = []
-    ) {
+    public function __construct()
+    {
         $this->request = Request::createFromGlobals();
-
-        $this->hideFromRequest = $hideFromRequest;
-        $this->hideFromHeaders = $hideFromHeaders;
-        $this->hideFromCookies = $hideFromCookies;
     }
 
     public function getContext(): ?array
