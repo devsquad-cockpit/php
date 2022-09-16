@@ -5,6 +5,7 @@ namespace Cockpit\Php;
 class Cockpit
 {
     protected static $customEnvs = [];
+
     public static $frameworkVersion;
 
     public static function addCustomEnvs($callback)
@@ -31,10 +32,8 @@ class Cockpit
         return $envs;
     }
 
-    public function frameworkVersion(string $frameworkVersion)
+    public static function frameworkVersion(string $frameworkVersion)
     {
-        $this->frameworkVersion = $frameworkVersion;
-
-        return $this;
+        self::$frameworkVersion = $frameworkVersion;
     }
 }

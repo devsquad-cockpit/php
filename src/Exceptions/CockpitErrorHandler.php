@@ -15,7 +15,8 @@ class CockpitErrorHandler
     public function log(Throwable $throwable): void
     {
         $traceContext       = new StackTraceContext($throwable);
-        $environmentContext = new EnvironmentContext;
+        
+        $environmentContext = new EnvironmentContext();
 
         $data = [
             'exception'   => Str::replace('Symfony\\Component\\ErrorHandler\\', '', get_class($throwable)),
