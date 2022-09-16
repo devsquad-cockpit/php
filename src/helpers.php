@@ -13,8 +13,8 @@ if (!function_exists('get_base_dir')) {
     }
 }
 
-if (!function_exists('runningInConsole')) {
-    function runningInConsole()
+if (!function_exists('running_in_console')) {
+    function running_in_console()
     {
         return php_sapi_name() == "cli";
     }

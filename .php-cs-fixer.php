@@ -4,7 +4,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $rules = [
-    '@PSR2'                   => true,
+    '@PSR12'                  => true,
     'align_multiline_comment' => false,
     'array_indentation'       => true,
     'array_syntax'            => ['syntax' => 'short'],
@@ -20,7 +20,7 @@ $rules = [
         'position_after_control_structures'           => 'same',
         'position_after_functions_and_oop_constructs' => 'next',
     ],
-    'cast_spaces' => ['space' => 'none'],
+    'cast_spaces'                => ['space' => 'none'],
     'no_unused_imports'          => true,
     'combine_consecutive_issets' => false,
     'combine_consecutive_unsets' => false,

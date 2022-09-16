@@ -14,8 +14,6 @@ use Monolog\Logger;
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
-
-//uses(\Cockpit\Php\Tests\TestCase::class)->in('Feature');
 uses(\Cockpit\Php\Tests\TestCase::class)->in('Feature', 'Unit');
 
 /*

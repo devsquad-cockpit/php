@@ -5,7 +5,6 @@ namespace Cockpit\Php\Exceptions;
 use Cockpit\Php\Common\OccurrenceType;
 use Cockpit\Php\Context\DumpContext;
 use Cockpit\Php\Context\StackTraceContext;
-use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -13,10 +12,10 @@ use Throwable;
 
 class CockpitErrorHandler
 {
-    public static function log(Throwable $throwable)
+    public function log(Throwable $throwable): void
     {
         $traceContext = new StackTraceContext($throwable);
-        $dumpContext  = new DumpContext;
+        $dumpContext  = new DumpContext();
 
         $data = [
             'exception'   => Str::replace('Symfony\\Component\\ErrorHandler\\', '', get_class($throwable)),
@@ -24,40 +23,38 @@ class CockpitErrorHandler
             'file'        => $throwable->getFile(),
             'code'        => $throwable->getCode(),
             'resolved_at' => null,
-            'type'        => self::getExceptionType(),
-            'url'         => self::resolveUrl(),
+            'type'        => $this->getExceptionType(),
+            'url'         => $this->resolveUrl(),
             'trace'       => $traceContext->getContext(),
             'dump'        => $dumpContext->getContext()
         ];
 
-        self::send($data);
+        $this->send($data);
     }
 
-    protected static function resolveUrl(): ?string
+    protected function resolveUrl(): ?string
     {
-        return !runningInConsole()
+        return !running_in_console()
             ? Request::createFromGlobals()->fullUrl()
             : null;
     }
 
-    protected static function getExceptionType(): string
+    protected function getExceptionType(): string
     {
-        if (!runningInConsole()) {
+        if (!running_in_console()) {
             return OccurrenceType::WEB;
         }
 
         return OccurrenceType::CLI;
     }
 
-    protected static function send($data)
+    protected function send($data): void
     {
         try {
-            $client = new Client();
-            $client->post(getenv('COCKPIT_URL'), [
+            (new Client())->post(getenv('COCKPIT_URL'), [
                 'json' => $data
             ]);
-        } catch (Exception $e) {
-            echo 'Error: ' . $e->getMessage();
+        } catch (Throwable $e) {
         }
     }
 }

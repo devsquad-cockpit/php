@@ -6,4 +6,4 @@ use Symfony\Component\ErrorHandler\ErrorHandler;
 
 DumpContext::start();
 $handler = ErrorHandler::register();
-$handler->setExceptionHandler([CockpitErrorHandler::class, 'log']);
+$handler->setExceptionHandler([new CockpitErrorHandler(), 'log']);

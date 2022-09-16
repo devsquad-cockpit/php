@@ -14,5 +14,5 @@ it('should send error to cockpit server', function () {
             return $uri == $cockpitUrl;
         })->times(1);
 
-    CockpitErrorHandler::log(new MyException());
+    (new CockpitErrorHandler)->log(new MyException());
 });

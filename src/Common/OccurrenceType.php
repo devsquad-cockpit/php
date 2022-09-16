@@ -1,7 +1,8 @@
 <?php
+
 namespace Cockpit\Php\Common;
 
-class OccurrenceType
+abstract class OccurrenceType
 {
     public const WEB = 'web';
     public const CLI = 'cli';
