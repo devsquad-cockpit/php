@@ -7,12 +7,12 @@ use Cockpit\Php\Context\DumpContext;
 
 it('should be execute dump handler record value at dump context', function () {
     $value       = "Text dump";
-    $dumpContext = new DumpContext;
+    $dumpContext = new DumpContext();
 
     expect($dumpContext->getContext())
-    ->toBeEmpty()
-    ->toBeArray()
-    ->toHaveCount(0);
+        ->toBeEmpty()
+        ->toBeArray()
+        ->toHaveCount(0);
 
     $dumpHandler = new DumpHandler($dumpContext);
     $dumpHandler->dump($value);

@@ -26,7 +26,7 @@ class DumpContext implements ContextInterface, RecorderInterface
     public static function start(): DumpContext
     {
         $multiDumpHandler = new MultiDumpHandler();
-        $dumpContext      = new self;
+        $dumpContext      = new self();
 
         if (!self::$registeredHandler) {
             static::$registeredHandler = true;
