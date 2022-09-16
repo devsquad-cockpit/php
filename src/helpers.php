@@ -14,8 +14,11 @@ if (!function_exists('get_base_dir')) {
 }
 
 if (!function_exists('running_in_console')) {
+    $consoleFakeReturn;
     function running_in_console()
     {
-        return php_sapi_name() == "cli";
+        global $argv, $consoleFakeReturn;
+
+        return $consoleFakeReturn ?? !strrpos($argv[0], '/bin/pest') && php_sapi_name() == "cli";
     }
 }
