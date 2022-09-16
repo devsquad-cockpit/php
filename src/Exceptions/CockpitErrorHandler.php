@@ -31,14 +31,14 @@ class CockpitErrorHandler
 
     protected function resolveUrl(): ?string
     {
-        return !runningInConsole()
+        return !running_in_console()
             ? Request::createFromGlobals()->fullUrl()
             : null;
     }
 
     protected function getExceptionType(): string
     {
-        if (!runningInConsole()) {
+        if (!running_in_console()) {
             return OccurrenceType::WEB;
         }
 
@@ -48,8 +48,7 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            $client = new Client();
-            $client->post(getenv('COCKPIT_URL'), [
+            (new Client())->post(getenv('COCKPIT_URL'), [
                 'json' => $data
             ]);
         } catch (Throwable $e) {
