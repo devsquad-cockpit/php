@@ -146,7 +146,7 @@ SHELL;
 
     protected function getSession(): Collection
     {
-        if (!runningInConsole() && $this->request->hasSession()) {
+        if (!running_in_console() && $this->request->hasSession()) {
             return collect($this->request->getSession()->all())
                 ->except('_token');
         }
