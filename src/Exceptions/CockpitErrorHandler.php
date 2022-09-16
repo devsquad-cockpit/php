@@ -14,8 +14,8 @@ class CockpitErrorHandler
 {
     public function log(Throwable $throwable): void
     {
-        $traceContext       = new StackTraceContext($throwable);
-        
+        $traceContext = new StackTraceContext($throwable);
+
         $environmentContext = new EnvironmentContext();
 
         $data = [
