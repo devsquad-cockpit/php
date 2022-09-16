@@ -11,7 +11,7 @@ use Throwable;
 
 class CockpitErrorHandler
 {
-    public static function log(Throwable $throwable)
+    public function log(Throwable $throwable): void
     {
         $traceContext = new StackTraceContext($throwable);
 
@@ -21,22 +21,22 @@ class CockpitErrorHandler
             'file'        => $throwable->getFile(),
             'code'        => $throwable->getCode(),
             'resolved_at' => null,
-            'type'        => self::getExceptionType(),
-            'url'         => self::resolveUrl(),
+            'type'        => $this->getExceptionType(),
+            'url'         => $this->resolveUrl(),
             'trace'       => $traceContext->getContext(),
         ];
 
-        self::send($data);
+        $this->send($data);
     }
 
-    protected static function resolveUrl(): ?string
+    protected function resolveUrl(): ?string
     {
         return !runningInConsole()
             ? Request::createFromGlobals()->fullUrl()
             : null;
     }
 
-    protected static function getExceptionType(): string
+    protected function getExceptionType(): string
     {
         if (!runningInConsole()) {
             return OccurrenceType::WEB;
@@ -45,7 +45,7 @@ class CockpitErrorHandler
         return OccurrenceType::CLI;
     }
 
-    protected static function send($data)
+    protected function send($data): void
     {
         try {
             $client = new Client();
