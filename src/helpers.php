@@ -15,6 +15,7 @@ if (!function_exists('get_base_dir')) {
 
 if (!function_exists('running_in_console')) {
     $consoleFakeReturn;
+
     function running_in_console()
     {
         global $argv, $consoleFakeReturn;
