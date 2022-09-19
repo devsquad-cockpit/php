@@ -3,6 +3,7 @@
 namespace Cockpit\Php\Exceptions;
 
 use Cockpit\Php\Common\OccurrenceType;
+use Cockpit\Php\Context\DumpContext;
 use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Context\StackTraceContext;
 use GuzzleHttp\Client;
@@ -14,8 +15,8 @@ class CockpitErrorHandler
 {
     public function log(Throwable $throwable): void
     {
-        $traceContext = new StackTraceContext($throwable);
-
+        $traceContext       = new StackTraceContext($throwable);
+        $dumpContext        = new DumpContext();
         $environmentContext = new EnvironmentContext();
 
         $data = [
@@ -27,7 +28,8 @@ class CockpitErrorHandler
             'type'        => $this->getExceptionType(),
             'url'         => $this->resolveUrl(),
             'trace'       => $traceContext->getContext(),
-            'environment' => $environmentContext->getContext()
+            'dump'        => $dumpContext->getContext(),
+            'environment' => $environmentContext->getContext(),
         ];
 
         $this->send($data);
@@ -35,18 +37,18 @@ class CockpitErrorHandler
 
     protected function resolveUrl(): ?string
     {
-        return !running_in_console()
-            ? Request::createFromGlobals()->fullUrl()
-            : null;
+        return running_in_console()
+            ? null
+            : Request::createFromGlobals()->fullUrl();
     }
 
     protected function getExceptionType(): string
     {
-        if (!running_in_console()) {
-            return OccurrenceType::WEB;
+        if (running_in_console()) {
+            return OccurrenceType::CLI;
         }
 
-        return OccurrenceType::CLI;
+        return OccurrenceType::WEB;
     }
 
     protected function send($data): void

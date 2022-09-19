@@ -1,0 +1,7 @@
+/.gitattributes
+/.gitignore
+/.php-cs-fixer.php
+/phpcs.xml
+/phpmd.xml
+/phpunit-ci.xml
+/phpunit.xml
