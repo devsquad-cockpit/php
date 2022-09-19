@@ -31,18 +31,18 @@ class CockpitErrorHandler
 
     protected function resolveUrl(): ?string
     {
-        return !runningInConsole()
-            ? Request::createFromGlobals()->fullUrl()
-            : null;
+        return runningInConsole()
+            ? null
+            : Request::createFromGlobals()->fullUrl();
     }
 
     protected function getExceptionType(): string
     {
-        if (!runningInConsole()) {
-            return OccurrenceType::WEB;
+        if (runningInConsole()) {
+            return OccurrenceType::CLI;
         }
 
-        return OccurrenceType::CLI;
+        return OccurrenceType::WEB;
     }
 
     protected function send($data): void
