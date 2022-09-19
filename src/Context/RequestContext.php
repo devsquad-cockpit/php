@@ -5,7 +5,6 @@ namespace Cockpit\Php\Context;
 use Cockpit\Php\Interfaces\ContextInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -53,10 +52,7 @@ SHELL;
         $allHeaders = $this->request->headers->all();
 
         foreach ($allHeaders as $header => $value) {
-            $value = $this->shouldHideHeader($header)
-                ? '*****'
-                : implode(',', $value);
-
+            $value = implode(',', $value);
             $headers .= "\t-H '{$header}: {$value}' \ \r\n";
         }
 
@@ -93,15 +89,7 @@ SHELL;
             ['_token']
         );
 
-        $data = Arr::dot($data);
-
-        foreach (array_keys($data) as $key) {
-            if (in_array($key, $this->hideFromRequest)) {
-                $data[$key] = '*****';
-            }
-        }
-
-        return Arr::undot($data);
+        return $data;
     }
 
     protected function getFiles(): array
@@ -156,38 +144,12 @@ SHELL;
 
     protected function getCookies(): Collection
     {
-        $cookies = collect($this->request->cookies->all())
+        return collect($this->request->cookies->all())
             ->except(['XSRF-TOKEN']);
-
-        foreach (array_keys($cookies->toArray()) as $cookie) {
-            if ($this->shouldHideCookie($cookie)) {
-                $cookies[$cookie] = '*****';
-            }
-        }
-
-        return $cookies;
     }
 
     protected function getHeaders(): array
     {
-        $headers = $this->request->headers->all();
-
-        foreach (array_keys($headers) as $header) {
-            if ($this->shouldHideHeader($header)) {
-                $headers[$header] = ['*****'];
-            }
-        }
-
-        return $headers;
-    }
-
-    protected function shouldHideHeader(string $header): bool
-    {
-        return in_array(Str::lower($header), $this->hideFromHeaders);
-    }
-
-    protected function shouldHideCookie(string $cookie): bool
-    {
-        return in_array(Str::lower($cookie), $this->hideFromCookies);
+        return $this->request->headers->all();
     }
 }
