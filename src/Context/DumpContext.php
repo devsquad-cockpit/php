@@ -23,15 +23,15 @@ class DumpContext implements ContextInterface, RecorderInterface
 
     protected static $registeredHandler = false;
 
-    public static function start(): DumpContext
+    public function start(): DumpContext
     {
         $multiDumpHandler = new MultiDumpHandler();
         $dumpContext      = new self();
 
         if (!self::$registeredHandler) {
-            static::$registeredHandler = true;
+            self::$registeredHandler = true;
 
-            self::ensureOriginalHandlerExists();
+            $this->ensureOriginalHandlerExists();
 
             $originalHandler = VarDumper::setHandler(function ($dumpedVariable) use ($multiDumpHandler) {
                 $multiDumpHandler->dump($dumpedVariable);
@@ -59,7 +59,7 @@ class DumpContext implements ContextInterface, RecorderInterface
         self::$dumps[] = new Dump($htmlDump, $file, $lineNumber);
     }
 
-    public static function reset()
+    public function reset()
     {
         self::$dumps = [];
     }
@@ -75,7 +75,7 @@ class DumpContext implements ContextInterface, RecorderInterface
         return $dumps;
     }
 
-    protected static function ensureOriginalHandlerExists(): void
+    protected function ensureOriginalHandlerExists(): void
     {
         $reflectionProperty = new ReflectionProperty(VarDumper::class, 'handler');
         $reflectionProperty->setAccessible(true);

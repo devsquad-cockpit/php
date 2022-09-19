@@ -7,7 +7,7 @@ use Mockery;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
 beforeEach(function () {
-    DumpContext::reset();
+    (new DumpContext())->reset();
 });
 
 it('should dump context record data with success and get valid context', function () {
@@ -55,14 +55,14 @@ it('should dump context record data with empty source frame return', function ()
 });
 
 it('should dump context created with empty data', function () {
-    expect((new DumpContext)->getContext())
+    expect((new DumpContext())->getContext())
         ->toBeEmpty()
         ->toBeArray()
         ->toHaveCount(0);
 });
 
 it('should dump context reset call set empty data', function () {
-    $dumpContext = new DumpContext;
+    $dumpContext = new DumpContext();
     $dumpContext->record((new VarCloner())->cloneVar("Text dump"));
 
     expect($dumpContext->getContext())
@@ -77,7 +77,7 @@ it('should dump context reset call set empty data', function () {
         ->toHaveCount(0);
 });
 
-function getHtmlString():string
+function getHtmlString(): string
 {
     return
         <<<'EOTXT'
