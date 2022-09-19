@@ -3,6 +3,7 @@
 namespace Cockpit\Php\Exceptions;
 
 use Cockpit\Php\Common\OccurrenceType;
+use Cockpit\Php\Context\CommandContext;
 use Cockpit\Php\Context\DumpContext;
 use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Context\RequestContext;
@@ -22,6 +23,7 @@ class CockpitErrorHandler
         $environmentContext = new EnvironmentContext();
         $requestContext     = new RequestContext();
         $userContext        = new UserContext();
+        $commandContext     = new CommandContext();
 
         $data = [
             'exception'   => Str::replace('Symfony\\Component\\ErrorHandler\\', '', get_class($throwable)),
@@ -36,6 +38,7 @@ class CockpitErrorHandler
             'environment' => $environmentContext->getContext(),
             'request'     => $requestContext->getContext(),
             'user'        => $userContext->getContext(),
+            'command'     => $commandContext->getContext()
         ];
 
         $this->send($data);
