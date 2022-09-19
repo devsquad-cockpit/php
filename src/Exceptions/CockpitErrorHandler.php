@@ -5,6 +5,7 @@ namespace Cockpit\Php\Exceptions;
 use Cockpit\Php\Common\OccurrenceType;
 use Cockpit\Php\Context\DumpContext;
 use Cockpit\Php\Context\EnvironmentContext;
+use Cockpit\Php\Context\RequestContext;
 use Cockpit\Php\Context\StackTraceContext;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class CockpitErrorHandler
         $traceContext       = new StackTraceContext($throwable);
         $dumpContext        = new DumpContext();
         $environmentContext = new EnvironmentContext();
+        $requestContext     = new RequestContext();
 
         $data = [
             'exception'   => Str::replace('Symfony\\Component\\ErrorHandler\\', '', get_class($throwable)),
@@ -30,6 +32,7 @@ class CockpitErrorHandler
             'trace'       => $traceContext->getContext(),
             'dump'        => $dumpContext->getContext(),
             'environment' => $environmentContext->getContext(),
+            'request'     => $requestContext->getContext(),
         ];
 
         $this->send($data);
