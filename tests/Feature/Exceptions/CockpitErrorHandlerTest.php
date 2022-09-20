@@ -1,10 +1,11 @@
 <?php
 
-namespace Cockpit\Php\Tests;
+namespace Cockpit\Php\Tests\Feature\Exceptions;
 
 use Cockpit\Php\Common\OccurrenceType;
 use Cockpit\Php\Exceptions\CockpitErrorHandler;
 use Cockpit\Php\Tests\Fixtures\Exceptions\MyException;
+use Cockpit\Php\Tests\TestCase;
 use Mockery;
 
 class CockpitErrorHandlerTest extends TestCase
