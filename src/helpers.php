@@ -7,9 +7,7 @@ if (!function_exists('get_base_dir')) {
             return getenv('APP_PATH');
         }
 
-        $vendorDir = dirname(dirname(__FILE__));
-
-        return dirname(dirname($vendorDir));
+        return dirname(__FILE__, 4);
     }
 }
 
