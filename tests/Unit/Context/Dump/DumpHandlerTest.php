@@ -4,25 +4,23 @@ namespace Cockpit\Php\Tests\Unit\Context\Dump;
 
 use Cockpit\Php\Context\Dump\DumpHandler;
 use Cockpit\Php\Context\DumpContext;
+use Cockpit\Php\Tests\TestCase;
 
-it('should be execute dump handler record value at dump context', function () {
-    $value       = "Text dump";
-    $dumpContext = new DumpContext();
+class DumpHandlerTest extends TestCase
+{
+    /** @test */
+    public function it_should_be_execute_dump_handler_record_value_at_dump_context()
+    {
+        $value       = "Text dump";
+        $dumpContext = new DumpContext();
 
-    expect($dumpContext->getContext())
-        ->toBeEmpty()
-        ->toBeArray()
-        ->toHaveCount(0);
+        $this->assertCount(0, $dumpContext->getContext());
 
-    $dumpHandler = new DumpHandler($dumpContext);
-    $dumpHandler->dump($value);
+        $dumpHandler = new DumpHandler($dumpContext);
+        $dumpHandler->dump($value);
 
-    $response = $dumpContext->getContext()[0];
-
-    expect($response)
-        ->toBeArray()
-        ->toHaveKeys(['html_dump', 'file', 'line_number', 'microtime'])
-        ->and($response['html_dump'])
-        ->toBeString()
-        ->toContain($value);
-});
+        $response = $dumpContext->getContext()[0];
+        $this->assertEquals(array_keys($response), ['html_dump', 'file', 'line_number', 'microtime']);
+        $this->assertStringContainsString($value, $response['html_dump']);
+    }
+}

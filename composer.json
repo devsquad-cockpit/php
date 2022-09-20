@@ -14,7 +14,7 @@
   "scripts": {
     "coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit",
     "test": [
-      "./vendor/bin/phpunit"
+      "./vendor/bin/phpunit --testdox"
     ],
     "fix": [
       "./vendor/bin/php-cs-fixer fix --using-cache=no --verbose"

@@ -3,94 +3,88 @@
 namespace Cockpit\Php\Tests\Unit\Context;
 
 use Cockpit\Php\Context\DumpContext;
+use Cockpit\Php\Tests\TestCase;
 use Mockery;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 
-beforeEach(function () {
-    (new DumpContext())->reset();
-});
-
-it('should dump context record data with success and get valid context', function () {
-    $expectedFile = [
-        "file"     => "Teste.php",
-        "line"     => 11,
-        "function" => "{closure}",
-        "class"    => "Illuminate\Routing\RouteFileRegistrar",
-        "type"     => "->"
-    ];
-
-    $mock = getMockDumpContext($expectedFile);
-    $mock->record((new VarCloner())->cloneVar("Text dump"));
-    $response = $mock->getContext()[0];
-
-    expect($response)->toBeArray()->toHaveKeys(['html_dump', 'file', 'line_number', 'microtime']);
-    expect($response['html_dump'])
-        ->toBeString()
-        ->toContain(getHtmlString())
-        ->and($response['file'])
-        ->toBeString()
-        ->toEqual($expectedFile['file'])
-        ->and($response['line_number'])
-        ->toBeInt()
-        ->toEqual($expectedFile['line']);
-});
-
-it('should dump context record data with empty source frame return', function () {
-    $mock = getMockDumpContext();
-    $mock->record((new VarCloner())->cloneVar("Text dump"));
-    $response = $mock->getContext()[0];
-
-    expect($response)
-        ->toBeArray()
-        ->toHaveKeys(['html_dump', 'file', 'line_number', 'microtime'])
-        ->and($response['html_dump'])
-        ->toBeString()
-        ->toContain(getHtmlString())
-        ->and($response['file'])
-        ->toBeString()
-        ->toEqual("")
-        ->and($response['line_number'])
-        ->toBeInt()
-        ->toEqual(0);
-});
-
-it('should dump context created with empty data', function () {
-    expect((new DumpContext())->getContext())
-        ->toBeEmpty()
-        ->toBeArray()
-        ->toHaveCount(0);
-});
-
-it('should dump context reset call set empty data', function () {
-    $dumpContext = new DumpContext();
-    $dumpContext->record((new VarCloner())->cloneVar("Text dump"));
-
-    expect($dumpContext->getContext())
-        ->toBeArray()
-        ->toHaveCount(1);
-
-    $dumpContext->reset();
-
-    expect($dumpContext->getContext())
-        ->toBeEmpty()
-        ->toBeArray()
-        ->toHaveCount(0);
-});
-
-function getHtmlString(): string
+class DumpContextTest extends TestCase
 {
-    return
+    public function setUp(): void
+    {
+        parent::setUp();
+        (new DumpContext())->reset();
+    }
+
+    /** @test */
+    public function it_should_dump_context_record_data_with_success_and_get_valid_context()
+    {
+        $expectedFile = [
+            "file"     => "Teste.php",
+            "line"     => 11,
+            "function" => "{closure}",
+            "class"    => "Illuminate\Routing\RouteFileRegistrar",
+            "type"     => "->"
+        ];
+
+        $mock = $this->getMockDumpContext($expectedFile);
+        $mock->record((new VarCloner())->cloneVar("Text dump"));
+        $response = $mock->getContext()[0];
+
+        $this->assertEquals(array_keys($response), ['html_dump', 'file', 'line_number', 'microtime']);
+        $this->assertStringContainsString($this->getHtmlString(), $response['html_dump']);
+        $this->assertEquals($response['file'], $expectedFile['file']);
+        $this->assertEquals($response['line_number'], $expectedFile['line']);
+    }
+
+    /** @test */
+    public function it_should_dump_context_record_data_with_empty_source_frame_return()
+    {
+        $mock = $this->getMockDumpContext();
+        $mock->record((new VarCloner())->cloneVar("Text dump"));
+        $response = $mock->getContext()[0];
+
+        $this->assertEquals(array_keys($response), ['html_dump', 'file', 'line_number', 'microtime']);
+        $this->assertStringContainsString($this->getHtmlString(), $response['html_dump']);
+        $this->assertEquals($response['file'], '');
+        $this->assertEquals($response['line_number'], 0);
+    }
+
+    public function getHtmlString(): string
+    {
+        return
         <<<'EOTXT'
         <span class=sf-dump-str title="9 characters">Text dump</span>
         EOTXT;
-}
+    }
 
-function getMockDumpContext(?array $data = null)
-{
-    return Mockery::mock(DumpContext::class)
+    public function getMockDumpContext(?array $data = null)
+    {
+        return Mockery::mock(DumpContext::class)
         ->makePartial()
         ->shouldAllowMockingProtectedMethods()
         ->shouldReceive('findSourceFrame')
         ->andReturn($data)
         ->getMock();
+    }
+
+    /** @test */
+    public function it_should_dump_context_created_with_empty_data()
+    {
+        $context = (new DumpContext())->getContext();
+
+        $this->assertCount(0, $context);
+        $this->assertIsArray($context);
+    }
+
+    /** @test */
+    public function it_should_dump_context_reset_call_set_empty_data()
+    {
+        $dumpContext = new DumpContext();
+        $dumpContext->record((new VarCloner())->cloneVar("Text dump"));
+
+        $this->assertCount(1, $dumpContext->getContext());
+        $dumpContext->reset();
+
+        $this->assertCount(0, $dumpContext->getContext());
+    }
 }
