@@ -27,10 +27,4 @@ class HelpersTest extends TestCase
     {
         $this->assertTrue(running_in_console(null));
     }
-
-    /** @test */
-    public function it_should_return_false_when_is_running_on_test()
-    {
-        $this->assertFalse(running_in_console());
-    }
 }
