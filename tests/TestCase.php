@@ -19,7 +19,7 @@ class TestCase extends FrameworkTestCase
 
     public function assertArrayContains($actual, array $expected): self
     {
-        Arr::map(Arr::dot($expected), function ($value, $key) use ($actual) {
+        collect(Arr::dot($expected))->map(function ($value, $key) use ($actual) {
             Assert::assertEquals(Arr::get($actual, $key), $value);
         });
 
