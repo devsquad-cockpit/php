@@ -20,6 +20,6 @@ if (!function_exists('running_in_console')) {
     {
         global $argv, $consoleFakeReturn;
 
-        return $consoleFakeReturn ?? !strrpos($argv[0], '/bin/pest') && php_sapi_name() == "cli";
+        return $consoleFakeReturn ?? !strrpos($argv[0], '/bin/phpunit') && php_sapi_name() == "cli";
     }
 }

@@ -3,12 +3,16 @@
 namespace Cockpit\Php\Tests\Feature;
 
 use Cockpit\Php\Cockpit;
+use Cockpit\Php\Tests\TestCase;
 
-it('should add the custom environments', function () {
-    Cockpit::addCustomEnvs(['new-env' => 'custom-env']);
-    $payload = Cockpit::getCustomEnvs();
+class CockpitAddCustomEnvsTest extends TestCase
+{
+    /** @test */
+    public function it_should_add_the_custom_environments()
+    {
+        Cockpit::addCustomEnvs(['new-env' => 'custom-env']);
+        $payload = Cockpit::getCustomEnvs();
 
-    expect($payload)->toBeArray()
-        ->toHaveKeys(['new-env'])
-        ->and($payload['new-env'])->toBe('custom-env');
-});
+        $this->assertEquals($payload['new-env'], 'custom-env');
+    }
+}
