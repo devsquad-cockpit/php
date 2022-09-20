@@ -2,8 +2,10 @@
 
 namespace Cockpit\Php\Tests;
 
+use Illuminate\Support\Arr;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 
 class TestCase extends FrameworkTestCase
@@ -13,5 +15,14 @@ class TestCase extends FrameworkTestCase
     public function tearDown(): void
     {
         Mockery::close();
+    }
+
+    public function assertArrayContains($actual, array $expected): self
+    {
+        Arr::map(Arr::dot($expected), function ($value, $key) use ($actual) {
+            Assert::assertEquals(Arr::get($actual, $key), $value);
+        });
+
+        return $this;
     }
 }
