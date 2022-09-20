@@ -30,6 +30,14 @@ class CockpitTest extends TestCase
     }
 
     /** @test */
+    public function it_should_return_the_null_user_when_closure_is_null()
+    {
+        $user = Cockpit::getUser();
+
+        $this->assertNull($user);
+    }
+
+    /** @test */
     public function it_should_return_the_user_without_guard()
     {
         $data = ['name' => 'cockpit', 'email' => 'fake@email.com'];

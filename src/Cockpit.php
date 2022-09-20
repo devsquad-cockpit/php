@@ -33,7 +33,11 @@ class Cockpit
     {
         $request = Request::createFromGlobals();
 
-        return call_user_func(self::$userClosure, $request);
+        if (self::$userClosure) {
+            return call_user_func(self::$userClosure, $request);
+        }
+
+        return null;
     }
 
     public static function addCustomEnvs($callback)
