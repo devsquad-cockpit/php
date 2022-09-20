@@ -2,6 +2,7 @@
 
 namespace Cockpit\Php\Tests\Feature\Context;
 
+use Cockpit\Php\Cockpit;
 use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Tests\TestCase;
 
@@ -14,7 +15,7 @@ class EnvironmentContextTest extends TestCase
         $payload = $context->getContext();
 
         $this->assertArrayContains($payload, [
-            'framework_version'     => getenv('APP_VERSION'),
+            'framework_version'     => Cockpit::$frameworkVersion ?: getenv('APP_VERSION'),
             'laravel_locale'        => '',
             'laravel_config_cached' => '',
             'app_debug'             => getenv('APP_DEBUG'),
