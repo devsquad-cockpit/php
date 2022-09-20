@@ -16,7 +16,7 @@ use Throwable;
 
 class CockpitErrorHandler
 {
-    public function log(Throwable $throwable): void
+    public function log(Throwable $throwable): array
     {
         $traceContext       = new StackTraceContext($throwable);
         $dumpContext        = new DumpContext();
@@ -42,6 +42,8 @@ class CockpitErrorHandler
         ];
 
         $this->send($data);
+
+        return $data;
     }
 
     protected function resolveUrl(): ?string
