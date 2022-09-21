@@ -3,27 +3,30 @@
 namespace Cockpit\Php\Tests\Unit\Context\Dump;
 
 use Cockpit\Php\Context\Dump\MultiDumpHandler;
+use Cockpit\Php\Tests\TestCase;
 
-it('should be add multiple callable function at multidump handler and execute all functions', function () {
-    $multiDumpHandler = new MultiDumpHandler();
-    $multiDumpHandler->addHandler(function ($var) {
-        var_dump('call one ' . $var);
-    });
+class MultiDumpHandlerTest extends TestCase
+{
+    /** @test */
+    public function it_should_be_add_multiple_callable_function_at_multidump_handler_and_execute_all_functions()
+    {
+        $multiDumpHandler = new MultiDumpHandler();
+        $multiDumpHandler->addHandler(function ($var) {
+            var_dump('call one ' . $var);
+        });
 
-    $multiDumpHandler->addHandler(function ($var) {
-        var_dump('call two ' . $var);
-    });
+        $multiDumpHandler->addHandler(function ($var) {
+            var_dump('call two ' . $var);
+        });
 
-    expect($multiDumpHandler->getHandlers())
-        ->toBeArray()
-        ->toHaveCount(2)
-        ->and($multiDumpHandler->getHandlers()[0])
-        ->toBeCallable();
+        $this->assertCount(2, $multiDumpHandler->getHandlers());
+        $this->assertIsCallable($multiDumpHandler->getHandlers()[0]);
 
-    ob_start();
-    $multiDumpHandler->dump("Dump to test");
+        ob_start();
+        $multiDumpHandler->dump("Dump to test");
+        $context = ob_get_clean();
 
-    expect(ob_get_clean())
-        ->toContain('string(21) "call one Dump to test"')
-        ->toContain('string(21) "call two Dump to test"');
-});
+        $this->assertStringContainsString('string(21) "call one Dump to test"', $context);
+        $this->assertStringContainsString('string(21) "call two Dump to test"', $context);
+    }
+}

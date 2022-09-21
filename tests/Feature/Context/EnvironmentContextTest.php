@@ -2,33 +2,41 @@
 
 namespace Cockpit\Php\Tests\Feature\Context;
 
+use Cockpit\Php\Cockpit;
 use Cockpit\Php\Context\EnvironmentContext;
+use Cockpit\Php\Tests\TestCase;
 
-it('should return environment context', function () {
-    $context = new EnvironmentContext;
-    $payload = $context->getContext();
-
-    expect($payload)->toBeArray()
-        ->and($payload['framework_version'])->toBe(getenv('APP_VERSION'))
-        ->and($payload['laravel_locale'])->toBe('')
-        ->and($payload['laravel_config_cached'])->toBe('')
-        ->and($payload['app_debug'])->toBe(getenv('APP_DEBUG'))
-        ->and($payload['app_env'])->toBe(getenv('APP_ENV'))
-        ->and($payload['environment_date_time'])->toBe(date_default_timezone_get())
-        ->and($payload['php_version'])->toBe(phpversion())
-        ->and($payload['os_version'])->toBe(PHP_OS)
-        ->and($payload['server_software'])->toBe('')
-        ->and($payload['database_version'])->toBe('')
-        ->and($payload['browser_version'])->toBe(null)
-        ->and($payload['node_version'])->toBe(runExec('node -v'))
-        ->and($payload['npm_version'])->toBe(runExec('npm -v'));
-});
-
-function runExec($command)
+class EnvironmentContextTest extends TestCase
 {
-    if (($value = @exec($command)) !== '') {
-        return $value;
+    /** @test */
+    public function it_should_return_environment_context()
+    {
+        $context = new EnvironmentContext();
+        $payload = $context->getContext();
+
+        $this->assertArrayContains($payload, [
+            'framework_version'     => Cockpit::$frameworkVersion ?: getenv('APP_VERSION'),
+            'laravel_locale'        => '',
+            'laravel_config_cached' => '',
+            'app_debug'             => getenv('APP_DEBUG'),
+            'app_env'               => getenv('APP_ENV'),
+            'environment_date_time' => date_default_timezone_get(),
+            'php_version'           => phpversion(),
+            'os_version'            => PHP_OS,
+            'server_software'       => '',
+            'database_version'      => '',
+            'browser_version'       => null,
+            'node_version'          => $this->runExec('node -v'),
+            'npm_version'           => $this->runExec('npm -v'),
+        ]);
     }
 
-    return 'Not Captured';
+    public function runExec($command)
+    {
+        if (($value = @exec($command)) !== '') {
+            return $value;
+        }
+
+        return 'Not Captured';
+    }
 }

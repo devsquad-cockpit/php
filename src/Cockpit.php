@@ -33,7 +33,7 @@ class Cockpit
     {
         $request = Request::createFromGlobals();
 
-        if (is_callable(self::$userClosure)) {
+        if (self::$userClosure) {
             return call_user_func(self::$userClosure, $request);
         }
 

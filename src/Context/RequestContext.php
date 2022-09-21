@@ -15,9 +15,9 @@ class RequestContext implements ContextInterface
 {
     protected $request;
 
-    public function __construct()
+    public function __construct(Request $request = null)
     {
-        $this->request = Request::createFromGlobals();
+        $this->request = $request ?: Request::createFromGlobals();
     }
 
     public function getContext(): ?array
