@@ -65,7 +65,9 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            (new Client())->post(getenv('COCKPIT_URL'), [
+            (new Client([
+                'headers' => ['X-COCKPIT-TOKEN' => getenv('COCKPIT_TOKEN')]
+            ]))->post(getenv('COCKPIT_URL'), [
                 'json' => $data
             ]);
         } catch (Throwable $e) {
