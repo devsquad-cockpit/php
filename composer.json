@@ -26,9 +26,13 @@
       "./vendor/bin/phpunit"
     ]
   },
+  "bin": [
+    "bin/cockpit"
+  ],
   "autoload": {
     "psr-4": {
-      "Cockpit\\Php\\": "src/"
+      "Cockpit\\Php\\": "src/",
+      "Cockpit\\Php\\Commands\\": "bin/commands/"
     },
     "files": [
       "src/helpers.php",

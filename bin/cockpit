@@ -1,0 +1,28 @@
+#!/usr/bin/php
+<?php
+
+use Symfony\Component\Console\Application;
+
+if (php_sapi_name() !== 'cli') {
+    exit;
+}
+
+$root_app = dirname(__DIR__);
+
+require $root_app . '/vendor/autoload.php';
+
+$commands = array_map(function ($filename) {
+    $class = basename($filename, '.php');
+
+    $class = "Cockpit\\Php\\Commands\\$class";
+
+    return new $class();
+}, glob($root_app . '/bin/commands/*'));
+
+$app = new Application();
+
+$app->setName('Cockpit');
+
+$app->addCommands($commands);
+
+$app->run();
