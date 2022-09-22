@@ -51,7 +51,8 @@
     "illuminate/http": "^8.8|^9.28",
     "illuminate/container": "^8.83|^9.28",
     "guzzlehttp/guzzle": "^7.5",
-    "mockery/mockery": "^1.5"
+    "mockery/mockery": "^1.5",
+    "symfony/console": "v5.4|v6.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.3.3",

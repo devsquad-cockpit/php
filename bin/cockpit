@@ -1,6 +1,5 @@
 #!/usr/bin/php
 <?php
-
 use Symfony\Component\Console\Application;
 
 if (php_sapi_name() !== 'cli') {
@@ -9,7 +8,7 @@ if (php_sapi_name() !== 'cli') {
 
 $root_app = dirname(__DIR__);
 
-require $root_app . '/vendor/autoload.php';
+require $_composer_autoload_path ?? $root_app . '/vendor/autoload.php';
 
 $commands = array_map(function ($filename) {
     $class = basename($filename, '.php');
