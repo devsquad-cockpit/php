@@ -62,7 +62,7 @@ By the end you're being able to send a fake exception to test connection
 
 ## Set logged user
 
-Using the abiaxo function when reporting an error, the cockpit will send the data of the logged in user according to what was returned by Closure.
+Using the function below when reporting an error, the cockpit will send the data of the logged in user according to what was returned by Closure.
 
 ```php
 Cockpit::setUser(function() {
