@@ -9,7 +9,9 @@ use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Context\RequestContext;
 use Cockpit\Php\Context\StackTraceContext;
 use Cockpit\Php\Context\UserContext;
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -79,7 +81,10 @@ class CockpitErrorHandler
             $this->response = (new Client())->post(getenv('COCKPIT_URL'), [
                 'json' => $data
             ]);
-        } catch (Throwable $e) {
+        } catch (ClientException $e) {
+            $this->response = $e->getResponse();
+            file_put_contents('cockpit.log', $e->getMessage());
+        } catch (Exception $e) {
             file_put_contents('cockpit.log', $e->getMessage());
         }
     }
