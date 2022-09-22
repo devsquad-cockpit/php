@@ -4,18 +4,19 @@ namespace Cockpit\Php\Commands;
 
 use Cockpit\Php\Exceptions\CockpitErrorHandler;
 use Exception;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(
-    name: 'test',
-    description: 'Send fake data to webhook'
-)]
 class TestCockpitCommand extends Command
 {
+    public function __construct()
+    {
+        parent::__construct('test');
+        parent::setDescription('Send fake data to webhook');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = new ConsoleLogger($output);
