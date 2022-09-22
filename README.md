@@ -51,6 +51,15 @@ So that the cockpit can send the errors to the application you need to define th
 COCKPIT_URL=http://cockpit.app/webhook
 ```
 
+
+## Testing if everything works
+
+By the end you're being able to send a fake exception to test connection
+
+```php
+./vendor/bin/cockpit test
+```
+
 ## Set logged user
 
 Using the abiaxo function when reporting an error, the cockpit will send the data of the logged in user according to what was returned by Closure.
