@@ -11,11 +11,14 @@ use Cockpit\Php\Context\StackTraceContext;
 use Cockpit\Php\Context\UserContext;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Throwable;
 
 class CockpitErrorHandler
 {
+    private $response = null;
+
     public function log(Throwable $throwable): array
     {
         $traceContext       = new StackTraceContext($throwable);
@@ -46,6 +49,14 @@ class CockpitErrorHandler
         return $data;
     }
 
+    public function write(array $record): void
+    {
+        $this->log(
+            $record['context']['exception'],
+            Arr::except($record['context'], 'exception')
+        );
+    }
+
     protected function resolveUrl(): ?string
     {
         return running_in_console()
@@ -65,10 +76,25 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            (new Client())->post(getenv('COCKPIT_URL'), [
+            $this->response = (new Client())->post(getenv('COCKPIT_URL'), [
                 'json' => $data
             ]);
         } catch (Throwable $e) {
+            file_put_contents('cockpit.log', $e->getMessage());
         }
+    }
+
+    public function failed(): ?bool
+    {
+        return $this->response
+            ? $this->response->getStatusCode() !== 201
+            : null;
+    }
+
+    public function reason(): ?string
+    {
+        return $this->response
+            ? "Reason: {$this->response->getStatusCode()} {$this->response->getReasonPhrase()}"
+            : null;
     }
 }
