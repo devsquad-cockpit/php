@@ -1,8 +1,8 @@
 #!/usr/bin/php
 <?php
 
-use Cockpit\Php\Common\DotEnv;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
 
 if (php_sapi_name() !== 'cli') {
     exit;
@@ -13,7 +13,7 @@ $root_app = isset($_composer_bin_dir) ? dirname($_composer_bin_dir, 2) : dirname
 
 require $_composer_autoload_path ?? $root_app . '/vendor/autoload.php';
 
-(new DotEnv($root_app . '/.env'))->load();
+(new Dotenv())->load($root_app . '/.env');
 
 $commands = array_map(function ($filename) {
     $class = basename($filename, '.php');
