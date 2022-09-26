@@ -51,7 +51,7 @@ class TestCockpitCommandTest extends TestCase
         $commandTester = $this->execute();
 
         $this->assertSame(Status::FAILURE, $commandTester->getStatusCode());
-        $this->assertStringContainsString('You must fill COCKPIT_ROUTE env with a valid cockpit endpoint', $commandTester->getDisplay());
+        $this->assertStringContainsString('You must fill COCKPIT_URL env with a valid cockpit endpoint', $commandTester->getDisplay());
     }
 
     /** @test */
