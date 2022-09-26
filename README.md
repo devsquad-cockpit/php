@@ -52,9 +52,9 @@ COCKPIT_URL=http://cockpit.app/webhook
 ```
 
 
-## Testing if everything works
+## Testing
 
-By the end you're being able to send a fake exception to test connection
+You're able to send a fake error to the Cockpit as a test by running this command:
 
 ```php
 ./vendor/bin/cockpit test

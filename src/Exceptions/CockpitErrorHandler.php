@@ -11,7 +11,6 @@ use Cockpit\Php\Context\StackTraceContext;
 use Cockpit\Php\Context\UserContext;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -51,10 +50,7 @@ class CockpitErrorHandler
 
     public function write(array $record): void
     {
-        $this->log(
-            $record['context']['exception'],
-            Arr::except($record['context'], 'exception')
-        );
+        $this->log($record['context']['exception']);
     }
 
     protected function resolveUrl(): ?string
