@@ -18,6 +18,8 @@ class CockpitErrorHandler
 {
     private $response = null;
 
+    public $failed = false;
+
     public function log(Throwable $throwable): array
     {
         $traceContext       = new StackTraceContext($throwable);
@@ -76,17 +78,14 @@ class CockpitErrorHandler
             $this->response = (new Client())->post($webhookUrl, [
                 'json' => $data
             ]);
+
+            $this->failed = $this->response->getStatusCode() !== 201;
         } catch (Throwable $e) {
             $this->response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+            $this->failed   = true;
+
             error_log($e->getMessage(), $e->getCode());
         }
-    }
-
-    public function failed(): ?bool
-    {
-        return $this->response
-            ? $this->response->getStatusCode() !== 201
-            : true;
     }
 
     public function reason(): ?string

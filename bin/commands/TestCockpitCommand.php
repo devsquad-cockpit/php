@@ -35,7 +35,7 @@ class TestCockpitCommand extends Command
             ],
         ]);
 
-        if ($errorHandler->failed() === true || $errorHandler->failed() === null) {
+        if ($errorHandler->failed) {
             $logger->error('We couldn\'t reach Cockpit Server at ' . $link);
 
             if ($reason = $errorHandler->reason()) {
