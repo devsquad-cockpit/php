@@ -9,9 +9,7 @@ use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Context\RequestContext;
 use Cockpit\Php\Context\StackTraceContext;
 use Cockpit\Php\Context\UserContext;
-use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -78,14 +76,13 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            $this->response = (new Client())->post(getenv('COCKPIT_URL'), [
+            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_URL') . '/webhook');
+            $this->response = (new Client())->post($webhookUrl, [
                 'json' => $data
             ]);
-        } catch (ClientException $e) {
-            $this->response = $e->getResponse();
-            file_put_contents('cockpit.log', $e->getMessage());
-        } catch (Exception $e) {
-            file_put_contents('cockpit.log', $e->getMessage());
+        } catch (Throwable $e) {
+            $this->response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
+            error_log($e->getMessage(), $e->getCode());
         }
     }
 
@@ -93,7 +90,7 @@ class CockpitErrorHandler
     {
         return $this->response
             ? $this->response->getStatusCode() !== 201
-            : null;
+            : true;
     }
 
     public function reason(): ?string
