@@ -49,6 +49,7 @@ So that the cockpit can send the errors to the application you need to define th
 
 ```env
 COCKPIT_URL=http://cockpit.app/webhook
+COCKPIT_TOKEN=project-token
 ```
 
 ## Set logged user
