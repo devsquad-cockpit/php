@@ -76,14 +76,12 @@ class CockpitErrorHandler
         try {
             $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/webhook');
             $this->response = (new Client())->post($webhookUrl, [
-                'json' => $data
+                'json'        => $data,
+                'http_errors' => false
             ]);
 
             $this->failed = $this->response->getStatusCode() !== 201;
         } catch (Throwable $e) {
-            $this->response = method_exists($e, 'getResponse') ? $e->getResponse() : null;
-            $this->failed   = true;
-
             error_log($e->getMessage(), $e->getCode());
         }
     }
