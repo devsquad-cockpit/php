@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "cockpit/php",
+  "name": "devsquad-cockpit/php",
   "description": "A Freemium package to help you tracking your project errors",
   "license": "MIT",
   "minimum-stability": "dev",
