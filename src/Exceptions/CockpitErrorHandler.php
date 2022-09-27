@@ -75,7 +75,9 @@ class CockpitErrorHandler
     {
         try {
             $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/webhook');
-            $this->response = (new Client())->post($webhookUrl, [
+            $this->response = (new Client([
+                'headers' => ['X-COCKPIT-TOKEN' => getenv('COCKPIT_TOKEN')]
+            ]))->post($webhookUrl, [
                 'json'        => $data,
                 'http_errors' => false
             ]);

@@ -49,6 +49,7 @@ So that the cockpit can send the errors to the application you need to define th
 
 ```env
 COCKPIT_DOMAIN=http://fake-cockpit.app/
+COCKPIT_TOKEN=project-token
 ```
 
 
