@@ -8,12 +8,12 @@ if (php_sapi_name() !== 'cli') {
     exit;
 }
 
-$root     = isset($_composer_bin_dir) ? dirname($_composer_bin_dir) . '/cockpit/php' : dirname(__DIR__);
-$root_app = isset($_composer_bin_dir) ? dirname($_composer_bin_dir, 2) : dirname(__DIR__);
+$root    = isset($_composer_bin_dir) ? dirname($_composer_bin_dir) . '/cockpit/php' : dirname(__DIR__);
+$rootApp = isset($_composer_bin_dir) ? dirname($_composer_bin_dir, 2) : dirname(__DIR__);
 
-require $_composer_autoload_path ?? $root_app . '/vendor/autoload.php';
+require $_composer_autoload_path ?? $rootApp . '/vendor/autoload.php';
 
-(new Dotenv())->load($root_app . '/.env');
+(new Dotenv())->load($rootApp . '/.env');
 
 $commands = array_map(function ($filename) {
     $class = basename($filename, '.php');
