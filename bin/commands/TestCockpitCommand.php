@@ -21,8 +21,8 @@ class TestCockpitCommand extends Command
     {
         $logger = new ConsoleLogger($output);
 
-        if (!$link = getenv('COCKPIT_URL')) {
-            $logger->error('You must fill COCKPIT_URL env with a valid cockpit endpoint');
+        if (!$link = getenv('COCKPIT_DOMAIN')) {
+            $logger->error('You must fill COCKPIT_DOMAIN env with a valid cockpit endpoint');
 
             return Command::FAILURE;
         }

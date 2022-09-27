@@ -74,7 +74,7 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_URL') . '/webhook');
+            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/webhook');
             $this->response = (new Client())->post($webhookUrl, [
                 'json' => $data
             ]);

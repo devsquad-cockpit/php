@@ -15,7 +15,7 @@ require $_composer_autoload_path ?? $rootApp . '/vendor/autoload.php';
 
 (new Dotenv())->load($rootApp . '/.env');
 
-$commands = array_map(function ($filename) {
+$commands = array_map(function (string $filename) {
     $class = basename($filename, '.php');
 
     $class = "Cockpit\\Php\\Commands\\$class";

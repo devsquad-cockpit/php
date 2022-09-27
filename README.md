@@ -48,7 +48,7 @@ composer require devsquad-cockpit/php
 So that the cockpit can send the errors to the application you need to define this environment configuration in your .env file
 
 ```env
-COCKPIT_URL=http://cockpit.app/webhook
+COCKPIT_DOMAIN=http://cockpit.app/webhook
 ```
 
 

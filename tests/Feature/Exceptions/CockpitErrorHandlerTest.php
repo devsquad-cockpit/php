@@ -14,7 +14,7 @@ class CockpitErrorHandlerTest extends TestCase
     public function it_should_send_error_to_cockpit_serve()
     {
         $cockpitUrl = 'http://cockpit/webhook';
-        putenv('COCKPIT_URL=' . $cockpitUrl);
+        putenv('COCKPIT_DOMAIN=' . $cockpitUrl);
 
         Mockery::mock('overload:' . Client::class)
             ->shouldReceive('post')

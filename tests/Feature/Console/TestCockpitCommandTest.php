@@ -31,7 +31,7 @@ class TestCockpitCommandTest extends TestCase
     /** @test */
     public function it_should_send_cockpit_test_command(): void
     {
-        putenv('COCKPIT_URL=http://app.test/webhook');
+        putenv('COCKPIT_DOMAIN=http://app.test');
 
         Mockery::mock('overload:' . Client::class)
             ->shouldReceive('post')
@@ -46,18 +46,18 @@ class TestCockpitCommandTest extends TestCase
     /** @test */
     public function it_should_notice_when_isnt_able_to_send_test_when_route_is_empty(): void
     {
-        putenv('COCKPIT_URL=');
+        putenv('COCKPIT_DOMAIN=');
 
         $commandTester = $this->execute();
 
         $this->assertSame(Status::FAILURE, $commandTester->getStatusCode());
-        $this->assertStringContainsString('You must fill COCKPIT_URL env with a valid cockpit endpoint', $commandTester->getDisplay());
+        $this->assertStringContainsString('You must fill COCKPIT_DOMAIN env with a valid cockpit endpoint', $commandTester->getDisplay());
     }
 
     /** @test */
     public function it_should_return_an_error_message(): void
     {
-        putenv('COCKPIT_URL=http://app.test/wrong-url');
+        putenv('COCKPIT_DOMAIN=http://app.test/wrong-url/');
 
         Mockery::mock('overload:' . Client::class)
             ->shouldReceive('post')
