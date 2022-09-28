@@ -16,6 +16,10 @@ use Throwable;
 
 class CockpitErrorHandler
 {
+    private $response = null;
+
+    public $failed = false;
+
     public function log(Throwable $throwable): array
     {
         $traceContext       = new StackTraceContext($throwable);
@@ -46,6 +50,11 @@ class CockpitErrorHandler
         return $data;
     }
 
+    public function write(array $record): void
+    {
+        $this->log($record['context']['exception']);
+    }
+
     protected function resolveUrl(): ?string
     {
         return running_in_console()
@@ -65,12 +74,24 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            (new Client([
+            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/webhook');
+            $this->response = (new Client([
                 'headers' => ['X-COCKPIT-TOKEN' => getenv('COCKPIT_TOKEN')]
-            ]))->post(getenv('COCKPIT_URL'), [
-                'json' => $data
+            ]))->post($webhookUrl, [
+                'json'        => $data,
+                'http_errors' => false
             ]);
+
+            $this->failed = $this->response->getStatusCode() !== 201;
         } catch (Throwable $e) {
+            error_log($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function reason(): ?string
+    {
+        return $this->response
+            ? "Reason: {$this->response->getStatusCode()} {$this->response->getReasonPhrase()}"
+            : null;
     }
 }

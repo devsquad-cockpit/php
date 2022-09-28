@@ -48,13 +48,22 @@ composer require devsquad-cockpit/php
 So that the cockpit can send the errors to the application you need to define this environment configuration in your .env file
 
 ```env
-COCKPIT_URL=http://cockpit.app/webhook
+COCKPIT_DOMAIN=http://fake-cockpit.app/
 COCKPIT_TOKEN=project-token
+```
+
+
+## Testing
+
+You're able to send a fake error to the Cockpit as a test by running this command:
+
+```php
+./vendor/bin/cockpit test
 ```
 
 ## Set logged user
 
-Using the abiaxo function when reporting an error, the cockpit will send the data of the logged in user according to what was returned by Closure.
+Using the function below when reporting an error, the cockpit will send the data of the logged in user according to what was returned by Closure.
 
 ```php
 Cockpit::setUser(function() {
