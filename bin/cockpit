@@ -12,7 +12,14 @@ $rootApp = isset($_composer_bin_dir) ? dirname($_composer_bin_dir, 2) : dirname(
 
 $envfile = $rootApp . '/.env';
 
-require $_composer_autoload_path ?? $rootApp . '/vendor/autoload.php';
+try {
+    require $_composer_autoload_path ?? $rootApp . '/vendor/autoload.php';
+} catch (\Throwable $e) {
+    echo "Something wrong happened when we tried to send data to Cockpit servers.\n";
+    echo "Please look at your log file for more info";
+    error_log($e);
+    return 1;
+}
 
 if (file_exists($envfile)) {
     (new Dotenv())->usePutenv()->load($envfile);

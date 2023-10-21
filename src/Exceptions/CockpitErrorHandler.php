@@ -2,17 +2,21 @@
 
 namespace Cockpit\Php\Exceptions;
 
+use Throwable;
+use RuntimeException;
+use GuzzleHttp\Client;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Cockpit\Php\Context\DumpContext;
+use Cockpit\Php\Context\UserContext;
+use Symfony\Component\Dotenv\Dotenv;
 use Cockpit\Php\Common\OccurrenceType;
 use Cockpit\Php\Context\CommandContext;
-use Cockpit\Php\Context\DumpContext;
-use Cockpit\Php\Context\EnvironmentContext;
 use Cockpit\Php\Context\RequestContext;
 use Cockpit\Php\Context\StackTraceContext;
-use Cockpit\Php\Context\UserContext;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Throwable;
+use Cockpit\Php\Context\EnvironmentContext;
+use Symfony\Component\ErrorHandler\ErrorHandler;
+use Symfony\Component\VarDumper\VarDumper;
 
 class CockpitErrorHandler
 {
@@ -47,6 +51,8 @@ class CockpitErrorHandler
 
         $this->send($data);
 
+        print_r($data);
+
         return $data;
     }
 
@@ -74,7 +80,14 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/webhook');
+            $envfile = getcwd() . '/.env';
+
+            if (file_exists($envfile)) {
+                (new Dotenv())->usePutenv()->load($envfile);
+            }
+
+            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/api/capture');
+
             $this->response = (new Client([
                 'headers' => ['X-COCKPIT-TOKEN' => getenv('COCKPIT_TOKEN')]
             ]))->post($webhookUrl, [
@@ -84,7 +97,9 @@ class CockpitErrorHandler
 
             $this->failed = $this->response->getStatusCode() !== 201;
         } catch (Throwable $e) {
-            error_log($e->getMessage(), $e->getCode());
+            echo "Something wrong happened when we tried to send data to Cockpit servers.\n";
+            echo "Please look at your log file for more info";
+            error_log($e);
         }
     }
 
