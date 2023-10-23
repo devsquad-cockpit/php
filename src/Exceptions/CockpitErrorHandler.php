@@ -16,6 +16,7 @@ use Cockpit\Php\Context\RequestContext;
 use Cockpit\Php\Context\StackTraceContext;
 use Cockpit\Php\Context\EnvironmentContext;
 use Symfony\Component\ErrorHandler\ErrorHandler;
+use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\VarDumper\VarDumper;
 
 class CockpitErrorHandler
@@ -51,7 +52,11 @@ class CockpitErrorHandler
 
         $this->send($data);
 
-        print_r($data);
+        $renderer = new HtmlErrorRenderer(debug: true);
+
+        $exception = $renderer->render($throwable);
+
+        echo $exception->getAsString();
 
         return $data;
     }
