@@ -14,7 +14,7 @@ class TestCockpitCommand extends Command
     public function __construct()
     {
         parent::__construct('test');
-        parent::setDescription('Send fake data to webhook');
+        parent::setDescription('Send fake data to capture endpoint');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

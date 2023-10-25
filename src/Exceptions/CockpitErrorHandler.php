@@ -74,10 +74,10 @@ class CockpitErrorHandler
     protected function send($data): void
     {
         try {
-            $webhookUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/webhook');
+            $captureUrl     = preg_replace('#(?<!:)/+#im', '/', getenv('COCKPIT_DOMAIN') . '/api/capture');
             $this->response = (new Client([
                 'headers' => ['X-COCKPIT-TOKEN' => getenv('COCKPIT_TOKEN')]
-            ]))->post($webhookUrl, [
+            ]))->post($captureUrl, [
                 'json'        => $data,
                 'http_errors' => false
             ]);
